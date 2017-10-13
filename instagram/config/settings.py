@@ -13,16 +13,15 @@ import json
 import os
 
 # instagram_project/instagram/
-
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # instagram_project/
 ROOT_DIR = os.path.dirname(BASE_DIR)
 # instagram_project/.config_secret/
 CONFIG_SECRET_DIR = os.path.join(ROOT_DIR, '.config_secret')
 # instagram_project/instagram/media/
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # instagram_project/instagram/static/
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # 1. setting_common.json 파일을 읽어 config_secret_common_str 변수에 저장
 f = open(os.path.join(CONFIG_SECRET_DIR, 'settings_common.json'))
