@@ -1,5 +1,15 @@
 {
   "django": {
-    "secret_key": "r1t+@mr7^^6s)&_nljfpr%n49u5xke#b02^ai!qj0lm4(e)!w-"
+    "secret_key": "r1t+@mr7^^6s)&_nljfpr%n49u5xke#b02^ai!qj0lm4(e)!w-",
+    "databases": {
+      "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": "localhost",
+        "PORT": "5432",
+        "NAME": "instagram",
+        "USER": "namwoo",
+        "PASSWORD": "000000"
+      }
+    }
   }
 }

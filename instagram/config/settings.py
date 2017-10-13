@@ -22,7 +22,7 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 CONFIG_SECRET_DIR = os.path.join(ROOT_DIR, '.config_secret')
 
 # 1. setting_common.json 파일을 읽어 config_secret_common_str 변수에 저장
-f = open(CONFIG_SECRET_DIR, "setting_common.json")
+f = open(os.path.join(CONFIG_SECRET_DIR, 'settings_common.json'))
 config_secret_common_str = f.read()
 
 # 2. json.loads(<json string>) 함수를 호출해서 JSON텍스트 파일의 내용을 python dict으로 변환,
@@ -85,13 +85,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = config_secret_common["django"]["databases"]
 
 
 # Password validation
