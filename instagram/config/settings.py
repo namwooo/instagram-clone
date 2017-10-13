@@ -23,6 +23,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 # instagram_project/instagram/static/
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'template')
 
 # 1. setting_common.json 파일을 읽어 config_secret_common_str 변수에 저장
 f = open(os.path.join(CONFIG_SECRET_DIR, 'settings_common.json'))
@@ -30,7 +31,7 @@ config_secret_common_str = f.read()
 
 # 2. json.loads(<json string>) 함수를 호출해서 JSON텍스트 파일의 내용을 python dict으로 변환,
 #   해당하는 값을 config_secret_common 에 할당
-config_secret_common = dict(json.loads(config_secret_common_str))
+config_secret_common = json.loads(config_secret_common_str)
 SECRET_KEY = config_secret_common["django"]["secret_key"]
 
 # Quick-start development settings - unsuitable for production
@@ -72,7 +73,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            TEMPLATES_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

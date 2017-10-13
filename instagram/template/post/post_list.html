@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div>
+    {% for post in posts %}
+    <div>{{ post.photo }}</div>
+    {% endfor %}
+</div>
+</body>
+</html>
+
+
+<!--template language의 for구문을 사용해서 각 Post의 photo항목을 출력 -->
+<!--photo속성의 url속성을 사용해서 img태그를 사용 실제 이미지를 보여주기-->
+
+<!--1. 사진 업로드 하기-->
+<!--2. 사진에 댓글달기-->
+<!--urls.py모듈을 post애플리케이션 내부에 생성하고, include를 이용해서 root urls.py모듈을 사용-->
+<!--사진 댓글 지우기, 사진 지우기 -->
