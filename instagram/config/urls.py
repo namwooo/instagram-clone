@@ -19,11 +19,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 
-from post.views import post_list
+from post.views import post_list, upload_photo
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/$', post_list, name='post_list'),
+    url(r'^post/upload_photo/$', upload_photo, name='upload_photo'),
 ]
 urlpatterns += static(
     settings.MEDIA_URL,

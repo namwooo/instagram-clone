@@ -22,3 +22,4 @@ class PostComment(models.Model):
     post = models.ForeignKey(Post)
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
+
