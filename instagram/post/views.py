@@ -26,11 +26,32 @@ def post_create(request):
     :return:
     """
     if request.method == 'POST':
+        # POST 요청의 경우 PostForm인스턴스 생성과정에서 request.POST, request.FILES 사용
         form = PostForm(request.POST, request.FILES)
+        # form에 전달 된 데이터들이 Form field에 대해 유효 한지 검사
         if form.is_valid():
+            # 유효할 경우 Post 인스턴스 생성 및 저장
             post = Post.objects.create(photo=form.cleaned_data['photo'])
             return HttpResponse(f'<img src="{post.photo.url}">')
     else:
+        # GET 요청의 겨우 빈 form 인스턴스를 생성
         form = PostForm()
 
-    return render(request, 'post/post_create.html', {'form': form})
+    context = {
+        'form': form
+    }
+
+    return render(request, 'post/post_create.html', context)
+
+
+def post_detail(request, pk):
+    """
+
+    :param request:
+    :return:
+    """
+    post = Post.objects.get(pk=pk)
+    context = {
+        'post': post
+    }
+    return render(request, 'post/post_detail.html', context)
