@@ -46,7 +46,8 @@ def post_create(request):
 
 def post_detail(request, pk):
     """
-
+    1. 요청 받은 request와 pk로 해당 post 객체를 post에 할당
+    2.
     :param request:
     :return:
     """
