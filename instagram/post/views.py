@@ -77,14 +77,11 @@ def comment_create(request, post_pk):
         form = CommentForm(request.POST)
         # 유효성 검사
         if form.is_valid():
-            comment = PostComment.objects.create(
+            PostComment.objects.create(
                 post=post,
                 content=form.cleaned_data['comment']
             )
+            next =request.GET.get('next')
+            if next:
+                return redirect(next)
             return redirect('post_detail', post_pk=post.pk)
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'post/comment_create.html', context)
