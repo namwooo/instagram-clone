@@ -1,8 +1,8 @@
-from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render
 
 from .models import Post
+from .forms import PostForm
 
 
 def post_list(request):
@@ -22,16 +22,15 @@ def post_list(request):
 
 def post_create(request):
     """
-    1. post_create.html 파일을 만들고 /post/create
     :param request:
     :return:
     """
     if request.method == 'POST':
-        photo = request.FILES['photo']
-        Post.objects.create(photo=photo)
-
-        return HttpResponse('photo uploaded success')
-
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = Post.objects.create(photo=form.cleaned_data['photo'])
+            return HttpResponse(f'<img src="{post.photo.url}">')
     else:
-        return render(request, 'post/post_create.html')
+        form = PostForm()
 
+    return render(request, 'post/post_create.html', {'form': form})
