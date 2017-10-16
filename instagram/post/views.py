@@ -80,8 +80,6 @@ def comment_create(request, post_pk):
                 content=form.cleaned_data['comment']
             )
             return redirect('post_detail', post_pk=post.pk)
-    else:
-        form = CommentForm()
 
     context = {
         'form': form
