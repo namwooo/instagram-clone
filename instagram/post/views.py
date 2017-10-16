@@ -20,12 +20,18 @@ def post_list(request):
     return render(request, 'post/post_list.html', context)
 
 
-def upload_photo(request):
+def post_create(request):
+    """
+    1. post_create.html 파일을 만들고 /post/create
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
-        photo = request.FILES['myphoto']
+        photo = request.FILES['photo']
         Post.objects.create(photo=photo)
 
         return HttpResponse('photo uploaded success')
 
-    return render(request, 'post/post_list.html')
+    else:
+        return render(request, 'post/post_create.html')
 
