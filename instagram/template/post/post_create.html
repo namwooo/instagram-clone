@@ -5,7 +5,7 @@
     <form action="{% url 'post_create' %}" method="POST">
         {% csrf_token %}
         {{ form }}
-        <button>submit</button>
+        <button class="btn-primary btn btn-block">업로드 하기</button>
     </form>
 </div>
 {% endblock %}

@@ -10,6 +10,6 @@ def signup(request):
         user = User.objects.create_user(username=username, password=password)
         user.save()
 
-        return HttpResponse(f'{user.username}{user.password}')
+        return HttpResponse(f'username:{user.username} password:{user.password}')
 
     return render(request, 'member/signup.html')
