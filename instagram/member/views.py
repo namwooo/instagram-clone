@@ -10,11 +10,17 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             email = form.cleaned_data['email']
 
-            new_user = User.objects.create_user(username=username, password=password, email=email)
+            new_user = User.objects.create_user(first_name=first_name,
+                                                last_name=last_name,
+                                                username=username,
+                                                password=password,
+                                                email=email)
             login(request, new_user)
 
             return redirect('/post/')

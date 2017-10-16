@@ -2,11 +2,31 @@ from django import forms
 
 
 class SignUpForm(forms.Form):
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '이름'
+
+            }
+        )
+    )
+
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '성'
+
+            }
+        )
+    )
+
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'username'
+                'placeholder': '사용자 이름'
 
             }
         )
@@ -16,7 +36,7 @@ class SignUpForm(forms.Form):
         widget = forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'email'
+                'placeholder': '이메일'
             }
         )
     )
@@ -26,7 +46,7 @@ class SignUpForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'type':'password',
-                'placeholder':'password'
+                'placeholder':'비밀번호'
 
             }
         )
@@ -37,7 +57,7 @@ class SignInForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'username'
+                'placeholder': '사용자 이름'
 
             }
         )
@@ -48,7 +68,7 @@ class SignInForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'type':'password',
-                'placeholder':'password'
+                'placeholder':'비밀번호'
 
             }
         )
