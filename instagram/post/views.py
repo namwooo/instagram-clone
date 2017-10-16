@@ -1,8 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import Post
-from .forms import PostForm
+from .models import Post, PostComment
+from .forms import PostForm, CommentForm
 
 
 def post_list(request):
@@ -44,15 +44,47 @@ def post_create(request):
     return render(request, 'post/post_create.html', context)
 
 
-def post_detail(request, pk):
+def post_detail(request, post_pk):
     """
     1. 요청 받은 request와 pk로 해당 post 객체를 post에 할당
     2.
     :param request:
     :return:
     """
-    post = Post.objects.get(pk=pk)
+    post = Post.objects.get(pk=post_pk)
+    post = get_object_or_404(Post, pk=post_pk)
+    comment_form = CommentForm()
     context = {
-        'post': post
+        'post': post,
+        'comment_form': comment_form
+
     }
     return render(request, 'post/post_detail.html', context)
+
+
+def comment_create(request, post_pk):
+    """
+
+    :param request:
+    :return:
+    """
+    # 'post_pk'에 해당하는 Post 인스턴스를  post에 할당
+    post = get_object_or_404(Post, pk=post_pk)
+    if request.method == 'POST':
+        # 데이터가 바인딩된 CommentForm 인스턴스를 form에 할당
+        form = CommentForm(request.POST)
+        # 유효성 검사
+        if form.is_valid():
+            comment = PostComment.objects.create(
+                post=post,
+                content=form.cleaned_data['comment']
+            )
+            return redirect('post_detail', post_pk=post.pk)
+    else:
+        form = CommentForm()
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'post/comment_create.html', context)
