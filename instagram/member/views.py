@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -12,12 +12,18 @@ def signup(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = User.objects.create_user(username=username, password=password)
-            user.save()
+            new_user = User.objects.create_user(username=username, password=password)
+            login(request, new_user)
 
-        return HttpResponse(f'username:{user.username} password:{user.password}')
+            return redirect('/post/')
+    else:
+        form = MemberForm()
 
-    return render(request, 'member/signup.html')
+        context = {
+            'form': form
+        }
+
+        return render(request, 'member/signup.html', context)
 
 
 def signin(request):
@@ -26,8 +32,18 @@ def signin(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
+            login(request, user)
             return redirect('/post/')
+        else:
+            return HttpResponse('로그인에 실패했습니다.')
 
-    return render(request, 'member/signin.html')
+    else:
+        form = MemberForm()
+
+        context = {
+            'form': form
+        }
+
+    return render(request, 'member/signin.html', context)
