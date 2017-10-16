@@ -3,21 +3,23 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import MemberForm
+from .forms import SignUpForm, SignInForm
 
 
 def signup(request):
     if request.method == 'POST':
-        form = MemberForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            new_user = User.objects.create_user(username=username, password=password)
+            password = form.cleaned_data['password1']
+            email = form.cleaned_data['email']
+
+            new_user = User.objects.create_user(username=username, password=password, email=email)
             login(request, new_user)
 
             return redirect('/post/')
     else:
-        form = MemberForm()
+        form = SignUpForm()
 
         context = {
             'form': form
@@ -28,7 +30,7 @@ def signup(request):
 
 def signin(request):
     if request.method == 'POST':
-        form = MemberForm(request.POST)
+        form = SignInForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -40,7 +42,7 @@ def signin(request):
             return HttpResponse('로그인에 실패했습니다.')
 
     else:
-        form = MemberForm()
+        form = SignInForm()
 
         context = {
             'form': form
