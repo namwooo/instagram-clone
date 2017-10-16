@@ -81,7 +81,7 @@ def comment_create(request, post_pk):
                 post=post,
                 content=form.cleaned_data['comment']
             )
-            next =request.GET.get('next')
+            next = request.GET.get('next')
             if next:
                 return redirect(next)
             return redirect('post_detail', post_pk=post.pk)

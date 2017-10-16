@@ -1,7 +1,7 @@
 from django import forms
 
 
-class Member(forms.Form):
+class MemberForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
