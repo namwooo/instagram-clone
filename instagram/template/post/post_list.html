@@ -7,9 +7,14 @@
     <a href="{% url 'post_detail' post_pk=post.pk %}">
         <img src="{{ post.photo.url }}" alt="">
     </a>
+
+    <form action="{% url 'comment_create' post_pk=post.pk %}" method="POST">
+        {% csrf_token %}
+        {{ comment_form }}
+        <button class="btn-primary btn btn-block">Write</button>
+    </form>
     {% endfor %}
 </div>
-
 {% endblock %}
 
 

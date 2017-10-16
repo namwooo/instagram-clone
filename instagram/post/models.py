@@ -25,4 +25,3 @@ class PostComment(models.Model):
 
     class Meta:
         ordering = ['created_date']
-

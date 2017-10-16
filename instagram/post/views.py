@@ -13,8 +13,10 @@ def post_list(request):
     :return:
     """
     posts = Post.objects.all()
+    comment_form = CommentForm()
     context = {
-        'posts': posts
+        'posts': posts,
+        'comment_form': comment_form
     }
 
     return render(request, 'post/post_list.html', context)
