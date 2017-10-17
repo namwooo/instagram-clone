@@ -19,20 +19,20 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_view
 
-from member.views import signup
-from post.views import post_list, post_create, post_detail, comment_create
+from post import views as post_views
+from member import views as member_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    #url(r'^$', 'base.html'),
-    url(r'^post/$', post_list, name='post_list'),
-    url(r'^post/create/$', post_create, name='post_create'),
-    url(r'^post/(?P<post_pk>\d+)$', post_detail, name='post_detail'),
-    url(r'^post/(?P<post_pk>\d+)/comment/$', comment_create, name='comment_create'),
-    url(r'^member/signup/$', signup, name='signup'),
+    url(r'^post/$', post_views.post_list, name='post_list'),
+    url(r'^post/create/$', post_views.post_create, name='post_create'),
+    url(r'^post/(?P<post_pk>\d+)$', post_views.post_detail, name='post_detail'),
+    url(r'^post/(?P<post_pk>\d+)/comment/$', post_views.comment_create, name='comment_create'),
+    url(r'^member/signup/$', member_views.signup, name='signup'),
     url(r'^member/login/$', auth_view.login, {'template_name': 'member/login.html'}, name='login'),
     url(r'^member/logout/$', auth_view.logout, {'next_page':'login'}, name='logout'),
 ]
+
 urlpatterns += static(
     settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT

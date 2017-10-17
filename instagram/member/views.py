@@ -3,12 +3,18 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import SignUpForm, SignInForm
+from .forms import SignUpForm
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 def signup(request):
     if request.method == 'POST':
+        # 데이터가 바인딩된 SignUpForm인스턴스를 생성
         form = SignUpForm(request.POST)
+        # 해당 form이 자신의 필드에 유효한 데이터인지 검사
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
