@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login as django_login
 
 User = get_user_model()
 
@@ -75,8 +75,7 @@ class SignUpForm(forms.Form):
         else:
             return data
 
-
-class SignInForm(forms.Form):
+class LoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -97,3 +96,26 @@ class SignInForm(forms.Form):
             }
         )
     )
+
+    def __init__(self, *args, **kwargs):
+        # super()로 forms의 __init__ 메소드를 호출 한다.
+        super.__init__(*args, **kwargs)
+        # self.user를  None으로 할당하여, user에 값이 없을 때 생기는 에러를 방지한다.
+        self.user = None
+
+    def clean(self):
+        #
+        cleaned_data = super(LoginForm, self).clean()
+        username = cleaned_data['username']
+        password = cleaned_data['password']
+
+        # authenticate 인증에 실패 하면 ValidationError를 발생 시킨다.
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise forms.ValidationError('로그인 정보가 틀렸습니다.')
+        # user가 인증에 성공 했을 떄, setattr은 login이란 이름의 _login메소드를 동적으로 추가한다.
+        else:
+            setattr(self, 'login', self._login)
+
+    def _login(self, request):
+        django_login(request, self.user)
