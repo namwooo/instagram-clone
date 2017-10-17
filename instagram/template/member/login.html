@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Login</h2>
+
+<!--폼 errors 확인-->
+{% if form.errors %}
+<p style="color: red">아이디와 비밀번호를 확인해 주세요</p>
+{% endif %}
+
+<!--login 폼-->
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn-primary">로그인</button>
+</form>
+{% endblock %}
