@@ -16,22 +16,9 @@ def signup(request):
         form = SignUpForm(request.POST)
         # 해당 form이 자신의 필드에 유효한 데이터인지 검사한다.
         if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            email = form.cleaned_data['email']
+            new_user = form.signup()
 
-            new_user = User.objects.create_user(first_name=first_name,
-                                                last_name=last_name,
-                                                username=username,
-                                                password=password,
-                                                email=email)
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                django_login(request, user)
-
-            return redirect('/post/')
+            return redirect('/member/login/')
     else:
         form = SignUpForm()
 
@@ -54,4 +41,9 @@ def login(request):
 
             return redirect('/post/')
     else:
-        return render(request, 'member/login.html')
+        form = LoginForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'member/login.html', context)

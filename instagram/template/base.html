@@ -18,13 +18,13 @@
             {% if user.is_authenticated %}
             {{ user.username }}
             {% else %}
-            로그인 해주세요
+            로그인 해주세요.
             {% endif %}
         </p>
         {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">logout</a>
+        <a href="{% url 'logout' %}">로그아웃</a>
         {% else %}
-        <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a>
+        <a href="{% url 'login' %}">로그인</a> / <a href="{% url 'signup' %}">회원가입</a>
         {% endif %}
     </header>
     {% block content %}
