@@ -1,6 +1,3 @@
-from django.contrib.auth import authenticate, login as django_login
-from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import SignUpForm, LoginForm
@@ -14,12 +11,15 @@ def signup(request):
     if request.method == 'POST':
         # 데이터가 바인딩된 SignUpForm인스턴스를 생성한다.
         form = SignUpForm(request.POST)
+
         # 해당 form이 자신의 필드에 유효한 데이터인지 검사한다.
         if form.is_valid():
             new_user = form.signup()
 
             return redirect('/member/login/')
+
     else:
+        # 빈 form을 생성하여 재사용한다.
         form = SignUpForm()
 
     context = {

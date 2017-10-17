@@ -4,7 +4,9 @@ from django.contrib.auth import get_user_model, authenticate, login as django_lo
 User = get_user_model()
 
 
+# form 클래스는 장고 forms를 상속한다. 회원가입에 필요한 기본정보를 SignUpForm의 필드로 정의한다.
 class SignUpForm(forms.Form):
+    # 정보의 종류에 따라 필드 타입, 위젯, 테그 속성을 입력한다.
     first_name = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -29,7 +31,7 @@ class SignUpForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '사용자 이름'
+                'placeholder': '사용자 아이디'
 
             }
         )
@@ -100,6 +102,7 @@ class SignUpForm(forms.Form):
         return self.cleaned_data
 
     def _signup(self):
+        # form에서 cleaned_data로 사용자 정보를 불러와, 새로운 사용자를 생성한다.
         first_name = self.cleaned_data['first_name']
         last_name = self.cleaned_data['last_name']
         username = self.cleaned_data['username']
