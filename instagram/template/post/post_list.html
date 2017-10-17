@@ -9,9 +9,9 @@
     </a>
 
     <ul id="post-comments-{{ post.pk }}">
-    {% for comment in post.comments.all %}
+        {% for comment in post.comments.all %}
         <li>{{ comment.content }}</li>
-    {% endfor %}
+        {% endfor %}
     </ul>
 
     <form action="{% url 'comment_create' post_pk=post.pk %}?next=/post/#post-comments-{{ post.pk }}" method="POST">
@@ -20,7 +20,7 @@
         <button class="btn-primary btn btn-block">Write</button>
     </form>
     {% endfor %}
-    
+
 </div>
 {% endblock %}
 

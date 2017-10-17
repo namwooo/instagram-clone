@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -40,3 +40,17 @@ def signup(request):
     }
 
     return render(request, 'member/signup.html', context)
+
+
+def login(request):
+    if request.metho == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            django_login(request, user)
+        else:
+            return redirect('/post/')
+
+    else:
+        return render(request, 'member/login.html')

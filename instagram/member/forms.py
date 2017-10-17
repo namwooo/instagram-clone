@@ -75,6 +75,7 @@ class SignUpForm(forms.Form):
         else:
             return data
 
+
 class SignInForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(

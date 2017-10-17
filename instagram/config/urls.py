@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^post/(?P<post_pk>\d+)/comment/$', post_views.comment_create, name='comment_create'),
     url(r'^member/signup/$', member_views.signup, name='signup'),
     url(r'^member/login/$', auth_view.login, {'template_name': 'member/login.html'}, name='login'),
-    url(r'^member/logout/$', auth_view.logout, {'next_page':'login'}, name='logout'),
+    url(r'^member/logout/$', auth_view.logout, {'next_page': 'login'}, name='logout'),
 ]
 
 urlpatterns += static(

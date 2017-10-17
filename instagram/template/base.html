@@ -11,17 +11,24 @@
     <link rel="stylesheet" href="{% static 'css/post.css' %}">
 </head>
 <body>
+<div class="container">
     <header>
         <h1>Instagram</h1>
+        <p>
+            {% if user.is_authenticated %}
+            {{ user.username }}
+            {% else %}
+            로그인 해주세요
+            {% endif %}
+        </p>
         {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">logout</a>
         {% else %}
         <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a>
         {% endif %}
     </header>
-    <div class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
+    {% block content %}
+    {% endblock %}
+</div>
 </body>
 </html>
