@@ -1,4 +1,33 @@
 .container {
-    margin-left: 347px;
-    margin-right: 347px;
+  width: 600px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 60px;
+}
+
+header {
+  vertical-align: text-bottom;
+
+}
+
+h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#logo {
+  padding-left: 0px;
+  padding-right: 0px;
+  line-height: 50px;
+}
+
+#LoginStatus {
+  text-align: right;
+  padding-left: 0px;
+  padding-right: 0px;
+  line-height: 50px;
+}
+
+.row {
+    margin: 20px 0px 0px 0px;
 }
