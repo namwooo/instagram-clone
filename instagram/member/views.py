@@ -11,10 +11,9 @@ def signup(request):
     if request.method == 'POST':
         # 데이터가 바인딩된 SignUpForm인스턴스를 생성한다.
         form = SignUpForm(request.POST)
-
-        # 해당 form이 자신의 필드에 유효한 데이터인지 검사한다.
+        # 해당 form이 자신의 필드에 유효한 데이터를 가지는지 검사한다.
         if form.is_valid():
-            new_user = form.signup()
+            form.signup()
 
             return redirect('/member/login/')
 
