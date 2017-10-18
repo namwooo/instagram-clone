@@ -149,7 +149,7 @@ class LoginForm(forms.Form):
     )
 
     password = forms.CharField(
-        widget=forms.TextInput(
+        widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
                 'type': 'password',
@@ -187,4 +187,4 @@ class LoginForm(forms.Form):
         :param request: login request from user
         :return: None
         """
-        django_login(self.user, request)
+        django_login(request, self.user)  # login 메소드는 request와 user를 위치 인자로 받기 때문에 순서가 바뀌면 안된다.

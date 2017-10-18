@@ -7,19 +7,28 @@ from .forms import PostForm, CommentForm
 
 def post_list(request):
     """
-    모든 Post목록을 리턴
-    template은 'post/post_list.html'을 사용
-    :param request:
-    :return:
+    모든 Post목록을 반환한다.
+    빈 CommentFor인스턴스를 같이 반환하여 post_list.html에서 form태그를 대체한다.
+    :param request: request to list all posts
+    :return: render to post_list.html
     """
     posts = Post.objects.all()
     comment_form = CommentForm()
+
     context = {
         'posts': posts,
-        'comment_form': comment_form
+        'comment_form': comment_form,
     }
 
     return render(request, 'post/post_list.html', context)
+
+
+# def post_create(request):
+#     if request.method == 'POST':
+#         form = PostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             post =  Post.objects.create(photo=form.cleaned_data['photo'])
+#             return
 
 
 def post_create(request):
