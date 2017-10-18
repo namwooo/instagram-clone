@@ -8,17 +8,20 @@ User = get_user_model()
 
 
 def signup(request):
+    """
+    사용자가 입력한 데이터가 바인딩된 SignUpForm 인스턴스를 생성한다.
+    해당 form 인스턴스에 대해 유효성을 검사한다.
+    성공한 경우 로그인 페이지로 리다이렉트, 실패한 경우 회원가입 페이지로 렌더링한다.
+    :param request: request for post from user
+    :return: render to signup.html
+    """
     if request.method == 'POST':
-        # 데이터가 바인딩된 SignUpForm인스턴스를 생성한다.
         form = SignUpForm(request.POST)
-        # 해당 form이 자신의 필드에 유효한 데이터를 가지는지 검사한다.
         if form.is_valid():
             form.signup()
 
-            return redirect('/member/login/')
-
+            return redirect('/member/login')
     else:
-        # 빈 form을 생성하여 재사용한다.
         form = SignUpForm()
 
     context = {
@@ -29,13 +32,16 @@ def signup(request):
 
 
 def login(request):
-    # 요청이 POST 메소드인지 검사한다.
+    """
+    사용자가 입력한 데이터가 바인딩된 LoginForm 인스턴스를 생성한다.
+    해당 form 인스턴스에 대해 유효성을 검사한다.
+    성공한 경우 포스트 페이지로 리다이렉트, 실패한 경우 로그인 페이지로 렌더링한다.
+    :param request: request for login from user
+    :return: render to login.html
+    """
     if request.method == 'POST':
-        # 데이터가 바인딩된 LoginForm인스턴스를 생성한다.
         form = LoginForm(request.POST)
-        # 해당 form이 자신의 필드에 유효한지 검사하고, cleaned_data로 데이터를 가지고 온다.
         if form.is_valid():
-            # form에 login 메소드를 사용하여 로그인 한다.
             form.login(request)
 
             return redirect('/post/')
