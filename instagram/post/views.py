@@ -27,7 +27,7 @@ def post_list(request):
 #     if request.method == 'POST':
 #         form = PostForm(request.POST, request.FILES)
 #         if form.is_valid():
-#             post =  Post.objects.create(photo=form.cleaned_data['photo'])
+#             post = Post.objects.create(photo=form.cleaned_data['photo'])
 #             return
 
 

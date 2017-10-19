@@ -9,7 +9,7 @@ class PostForm(forms.Form):
         required=True,  # 파일 없음이 허용 되지 않는다.
         widget=forms.ClearableFileInput(
             attrs={
-                'class': 'form-control'
+                'class': 'form-control',
             }
         )
     )
@@ -22,7 +22,7 @@ class CommentForm(forms.Form):
     comment = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'class': 'form-control'
+                'class': 'form-control',
             }
         )
     )

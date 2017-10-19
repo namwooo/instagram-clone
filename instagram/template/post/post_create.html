@@ -2,7 +2,7 @@
 
 {% block content %}
 <div>
-    <form action="{% url 'post_create' %}" method="POST">
+    <form action="{% url 'post_create' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
         <button class="btn-primary btn btn-block">업로드 하기</button>
