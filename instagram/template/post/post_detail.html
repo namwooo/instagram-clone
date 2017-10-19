@@ -3,21 +3,12 @@
 {% block content %}
 <div>
     {% if post.photo %}
+    <p>{{ post.author.username }}</p>
     <img src="{{ post.photo.url }}" alt="">
     {% else %}
     <h3>No image file exist</h3>
     {% endif %}
+
+    {% include 'include/comment_display.html' %}
 </div>
-
-<ul>
-    {% for comment in post.comments.all %}
-    <li>{{ comment.content }}</li>
-    {% endfor %}
-</ul>
-
-<form action="{% url 'post:comment_create' post_pk=post.pk %}" method="POST">
-    {% csrf_token %}
-    {{ comment_form }}
-    <button class="btn-primary btn btn-block">Write</button>
-</form>
 {% endblock %}

@@ -3,24 +3,13 @@
 {% block content %}
 <div>
     {% for post in posts %}
-    <!--<div>{{ post.photo }}</div>-->
+    <p>{{ post.author.username }}</p>
     <a href="{% url 'post:post_detail' post_pk=post.pk %}">
         <img src="{{ post.photo.url }}" alt="">
     </a>
 
-    <ul id="post-comments-{{ post.pk }}">
-        {% for comment in post.comments.all %}
-        <li>{{ comment.content }}</li>
-        {% endfor %}
-    </ul>
+{% include 'include/comment_display.html' %}
 
-    <form action="{% url 'post:comment_create' post_pk=post.pk %}?next=/post/#post-comments-{{ post.pk }}"
-          method="POST">
-        {% csrf_token %}
-        {{ comment_form }}
-        <button class="btn-primary btn btn-block">Write</button>
-    </form>
     {% endfor %}
-
 </div>
 {% endblock %}
