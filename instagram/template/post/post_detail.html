@@ -15,7 +15,7 @@
     {% endfor %}
 </ul>
 
-<form action="{% url 'comment_create' post_pk=post.pk %}" method="POST">
+<form action="{% url 'post:comment_create' post_pk=post.pk %}" method="POST">
     {% csrf_token %}
     {{ comment_form }}
     <button class="btn-primary btn btn-block">Write</button>

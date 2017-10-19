@@ -2,7 +2,13 @@ from django.conf import settings
 from django.db import models
 
 
+class PostManager(models.Model):
+    def get_queryset(self):
+        return super().get_queryset().exclude(author__isnull=True)
+
+
 class Post(models.Model):
+    objects = PostManager()
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,

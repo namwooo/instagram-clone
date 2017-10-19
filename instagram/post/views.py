@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Post, PostComment
@@ -7,14 +6,13 @@ from .forms import PostForm, CommentForm
 
 def post_list(request):
     """
-    모든 Post목록을 반환한다.
+    author가 없는 포스트를 제외한 Post목록을 반환한다.
     빈 CommentFor인스턴스를 같이 반환하여 post_list.html에서 form태그를 대체한다.
     :param request: request to list all posts
     :return: render to post_list.html
     """
     posts = Post.objects.all()
     comment_form = CommentForm()
-
     context = {
         'posts': posts,
         'comment_form': comment_form,
@@ -30,11 +28,14 @@ def post_create(request):
     :param request: request to upload imagefile
     :return: render to post_create.html
     """
+    if not request.user.is_authenticated:
+        return redirect('member:login')
+
     if request.method == 'POST':
         # POST 요청의 경우 PostForm인스턴스 생성과정에서 request.POST, request.FILES 사용
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = Post.objects.create(photo=form.cleaned_data['photo'])
+            post = Post.objects.create(photo=form.cleaned_data['photo'], author=request.user)
             return redirect('post:post_list')
     else:
         form = PostForm()
@@ -53,7 +54,8 @@ def post_detail(request, post_pk):
     :param post_pk: post's primary key to access a post
     :return: render to post_detail.html
     """
-    post = get_object_or_404(Post, pk=post_pk)  # Post 객체가 없을 경우, 404 에러가 발생한다.
+    # Post 객체가 없을 경우, 404 에러가 발생한다.
+    post = get_object_or_404(Post, pk=post_pk)
     comment_form = CommentForm()
 
     context = {
