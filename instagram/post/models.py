@@ -24,6 +24,12 @@ class Post(models.Model):
 
 class PostComment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
 
