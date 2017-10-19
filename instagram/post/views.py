@@ -50,8 +50,8 @@ def post_create(request):
 def post_detail(request, post_pk):
     """
     사용자가 원하는 하나의 포스트만을 보여준다.
-    :param request: request to display post details
-    :param post_pk: post's primary key to access a post
+    :param request: request to display post details from user
+    :param post_pk: post's primary key to access a certain post
     :return: render to post_detail.html
     """
     # Post 객체가 없을 경우, 404 에러가 발생한다.
@@ -76,12 +76,16 @@ def comment_create(request, post_pk):
     :param post_pk: post's primary key to access a post
     :return: redirect to post_detail.html
     """
+    if not request.user.is_authenticated:
+        return redirect('member:login')
+
     post = get_object_or_404(Post, pk=post_pk)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             PostComment.objects.create(
                 post=post,
+                author=request.user,
                 content=form.cleaned_data['comment']
             )
             next = request.GET.get('next')
