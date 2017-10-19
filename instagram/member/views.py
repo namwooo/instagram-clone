@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from .forms import SignUpForm, LoginForm
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout as django_logout
 
 User = get_user_model()
 
@@ -52,3 +52,9 @@ def login(request):
         'form': form
     }
     return render(request, 'member/login.html', context)
+
+
+def logout(request):
+    django_logout(request)
+
+    return redirect('login')
