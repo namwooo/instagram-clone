@@ -35,7 +35,7 @@ def post_create(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = Post.objects.create(photo=form.cleaned_data['photo'])
-            return HttpResponse(f'<img src="{post.photo.url}">')
+            return redirect('post:post_list')
     else:
         form = PostForm()
 

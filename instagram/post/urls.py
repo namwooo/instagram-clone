@@ -8,4 +8,3 @@ urlpatterns = [
     url(r'^(?P<post_pk>\d+)/$', post_detail, name='post_detail'),
     url(r'^(?P<post_pk>\d+)/comment/$', comment_create, name='comment_create'),
 ]
-
