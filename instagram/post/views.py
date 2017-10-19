@@ -50,7 +50,7 @@ def post_detail(request, post_pk):
     """
     사용자가 원하는 하나의 포스트만을 보여준다.
     :param request: request to display post details
-    :param post_pk: the post's primary key to access the post
+    :param post_pk: post's primary key to access a post
     :return: render to post_detail.html
     """
     post = get_object_or_404(Post, pk=post_pk)  # Post 객체가 없을 경우, 404 에러가 발생한다.
@@ -70,9 +70,9 @@ def comment_create(request, post_pk):
     댓글 생성 후, 해당 포스트 댓글 맨 위를 사용자에게 보여준다. post_list.html에서
     /post/#post-comments-{{ post.pk }}를 request로 가져와 next에 할당한다.
     id가 post-comments-{{ post.pk }}인 html위치로 리다이렉트 한다.
-    :param request:
-    :param post_pk:
-    :return:
+    :param request:request to put comment on a post
+    :param post_pk: post's primary key to access a post
+    :return: redirect to post_detail.html
     """
     post = get_object_or_404(Post, pk=post_pk)
     if request.method == 'POST':
