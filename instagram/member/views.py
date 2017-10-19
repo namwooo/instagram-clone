@@ -20,7 +20,7 @@ def signup(request):
         if form.is_valid():
             form.signup()
 
-            return redirect('/member/login')
+            return redirect('member:login')
     else:
         form = SignUpForm()
 
@@ -44,7 +44,7 @@ def login(request):
         if form.is_valid():
             form.login(request)
 
-            return redirect('/post/')
+            return redirect('post:post_list')
     else:
         form = LoginForm()
 
@@ -57,4 +57,4 @@ def login(request):
 def logout(request):
     django_logout(request)
 
-    return redirect('login')
+    return redirect('member:login')

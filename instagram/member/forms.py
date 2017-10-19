@@ -115,7 +115,7 @@ class SignUpForm(forms.Form):
         :return: data
         """
         data = self.cleaned_data['email']
-        if User.objects.filter(email=data).exits():
+        if User.objects.filter(email=data).exists():
             raise forms.ValidationError(f'다른 계정에서 {data}를 사용하고 있습니다.')
         else:
             return data

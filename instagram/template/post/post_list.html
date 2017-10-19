@@ -4,7 +4,7 @@
 <div>
     {% for post in posts %}
     <!--<div>{{ post.photo }}</div>-->
-    <a href="{% url 'post_detail' post_pk=post.pk %}">
+    <a href="{% url 'post:post_detail' post_pk=post.pk %}">
         <img src="{{ post.photo.url }}" alt="">
     </a>
 
@@ -14,7 +14,7 @@
         {% endfor %}
     </ul>
 
-    <form action="{% url 'comment_create' post_pk=post.pk %}?next=/post/#post-comments-{{ post.pk }}" method="POST">
+    <form action="{% url 'post:comment_create' post_pk=post.pk %}?next=/post/#post-comments-{{ post.pk }}" method="POST">
         {% csrf_token %}
         {{ comment_form }}
         <button class="btn-primary btn btn-block">Write</button>
