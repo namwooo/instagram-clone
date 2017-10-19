@@ -47,13 +47,13 @@ def post_create(request):
     return render(request, 'post/post_create.html', context)
 
 
-# def post_delete(request, post_pk):
-#     if not request.user.is_authenticated:
-#         return redirect('post:post_list')
-#
-#     if request.method == 'POST':
-#         Post.objects.get(pk=post_pk).delete()
-#     return redirect('post:post_list')
+def post_delete(request, post_pk):
+    if not request.user.is_authenticated:
+        return redirect('post:post_list')
+
+    if request.method == 'POST':
+        Post.objects.get(pk=post_pk).delete()
+    return redirect('post:post_list')
 
 
 def post_detail(request, post_pk):
@@ -101,7 +101,6 @@ def comment_create(request, post_pk):
             if next:
                 return redirect(next)
             return redirect('post:post_detail', post_pk=post.pk)
-
 
 # def comment_delete(request, post_pk):
 #     if not request.user.is_authenticated:
