@@ -102,11 +102,10 @@ def comment_create(request, post_pk):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            PostComment.objects.create(
-                post=post,
-                author=request.user,
-                content=form.cleaned_data['comment']
-            )
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
             next = request.GET.get('next')
             if next:
                 return redirect(next)
@@ -132,12 +131,12 @@ def comment_delete(request, comment_pk):
             raise PermissionDenied
 
 
-    # if not request.user.is_authenticated:
-    #     return redirect('post:post_list')
-    #
-    # if request.method == 'POST':
-    #     PostComment.objects.get(pk=comment_pk).delete()
-    #     next = request.GET.get('next')  # next = post-comments-{{ post.pk }}
-    #     if next:
-    #         return redirect('next')
-    #     return redirect('post:post_list')post_list
+            # if not request.user.is_authenticated:
+            #     return redirect('post:post_list')
+            #
+            # if request.method == 'POST':
+            #     PostComment.objects.get(pk=comment_pk).delete()
+            #     next = request.GET.get('next')  # next = post-comments-{{ post.pk }}
+            #     if next:
+            #         return redirect('next')
+            #     return redirect('post:post_list')post_list

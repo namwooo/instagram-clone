@@ -1,6 +1,6 @@
 from django import forms
 
-from post.models import Post
+from post.models import Post, PostComment
 
 
 class PostForm(forms.ModelForm):
@@ -9,6 +9,13 @@ class PostForm(forms.ModelForm):
         fields = [
             'photo',
         ]
+        widgets = {
+            'photo': forms.ClearableFileInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
+        }
 
     def save(self, commit=True, *args, **kwargs):
         # 1. 처음으로 Post객체가 만들어지는 순간
@@ -44,15 +51,16 @@ class PostForm(forms.ModelForm):
 #         )
 #     )
 
-
-class CommentForm(forms.Form):
-    """
-    사용자로부터 댓글을 입력 받는다.
-    """
-    comment = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-            }
-        )
-    )
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = PostComment
+        fields = [
+            'content',
+        ]
+        widgets = {
+            'content': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
+        }
