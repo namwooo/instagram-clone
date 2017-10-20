@@ -22,7 +22,7 @@ class User(AbstractUser):
         upload_to='user',
         blank=True,
     )
-    age = models.IntegerField('나이')
+    age = models.IntegerField()
     like_posts = models.ManyToManyField(
         'post.Post',
         verbose_name='좋아요 누른 포스트 목록'
