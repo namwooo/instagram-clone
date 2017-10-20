@@ -50,7 +50,7 @@ def post_create(request):
 
 def post_delete(request, post_pk):
     """
-    로그인된 사용자가 해당 포스트를 삭제한다.
+    사용자 이름과 포스트 작성자가 같을 때 해당 포스트를 삭제한다.
     :param request: request to delete a post from user
     :param post_pk: post's primary key to access a certain post
     :return: redirect to post_list.html
@@ -119,12 +119,23 @@ def comment_delete(request, comment_pk):
     :param comment_pk: PostComment's primary key
     :return: redirect to post_list/ redirect to html with id='next'
     """
-    if not request.user.is_authenticated:
-        return redirect('post:post_list')
-
     if request.method == 'POST':
-        PostComment.objects.get(pk=comment_pk).delete()
-        next = request.GET.get('next')  # next = post-comments-{{ post.pk }}
-        if next:
-            return redirect('next')
-        return redirect('post:post_list')
+        comment = get_object_or_404(PostComment, pk=comment_pk)
+        if comment.author == request.user:
+            comment.delete()
+            next = request.GET.get('next')
+            if next:
+                return redirect('next')
+        else:
+            raise PermissionDenied
+
+
+    # if not request.user.is_authenticated:
+    #     return redirect('post:post_list')
+    #
+    # if request.method == 'POST':
+    #     PostComment.objects.get(pk=comment_pk).delete()
+    #     next = request.GET.get('next')  # next = post-comments-{{ post.pk }}
+    #     if next:
+    #         return redirect('next')
+    #     return redirect('post:post_list')post_list
