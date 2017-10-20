@@ -7,6 +7,7 @@ class PostManager(models.Model):
     Manager.get_queryset()을 오버라이드 하는 PostManager를 정의한다.
     get_queryset메소드는 author가 null인 객체를 제외한 모든 객체를 기지고 온다.
     """
+
     def get_queryset(self):
         return super().get_queryset().exclude(author__isnull=True)
 
@@ -27,7 +28,7 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_date']
 
-    objects = PostManager() # author가 null인 객체를 제외하는 매니저이다.
+    objects = PostManager()  # author가 null인 객체를 제외하는 매니저이다.
 
 
 class PostComment(models.Model):

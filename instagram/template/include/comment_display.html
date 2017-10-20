@@ -1,14 +1,15 @@
 <ul id="post-comments-{{ post.pk }}">
     {% for comment in post.comments.all %}
     <li>{{ comment.content }}</li>
-    <form action="{% url 'post:comment_delete' comment_pk=comment.pk %}?next=/post/#post-comments-{{ post.pk }}"
-          method="POST">
+    <form action="{% url 'post:comment_delete' comment_pk=comment.pk %}?next=/post/#post-{{ post.pk }}"
+          method="POST" class ="form-inline">
         {% csrf_token %}
-        <button class="btn-primary">삭제</button>
+        <button class="btn btn-danger btn-xs">삭제</button>
     </form>
     {% endfor %}
 </ul>
-<form action="{% url 'post:comment_create' post_pk=post.pk %}?next=/post/#post-comments-{{ post.pk }}" method="POST">
+<form action="{% url 'post:comment_create' post_pk=post.pk %}?next={% url 'post:post_list' %}#post-comment-{{ post.pk }}"
+      method="POST">
     {% csrf_token %}
     {{ comment_form }}
     <button class="btn-primary btn btn-block">Write</button>

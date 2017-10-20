@@ -7,6 +7,7 @@ class UserManager(DjangoUserManager):
     superuser 생성시, age 디폴트 값을 29으로 할당한다.
     auth.UserManager.create_superuser를 오버라이드했다.
     """
+
     def create_superuser(self, *args, **kwargs):
         return super().create_superuser(age=29, *args, **kwargs)
 
@@ -21,7 +22,14 @@ class User(AbstractUser):
         upload_to='user',
         blank=True,
     )
-    age = models.IntegerField()
-    # REQUIRED_FIELDS = AbstractUser.REQUIRED_FIELDS + ['age']
+    age = models.IntegerField('나이')
+    like_posts = models.ManyToManyField(
+        'post.Post',
+        verbose_name='좋아요 누른 포스트 목록'
+    )
 
     objects = UserManager()  # proxy model로 UserManager 사용한다.
+
+    class Meta:
+        verbose_name = '사용자'
+        verbose_name_plural = ''

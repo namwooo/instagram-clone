@@ -36,7 +36,9 @@ def post_create(request):
         # POST 요청의 경우 PostForm인스턴스 생성과정에서 request.POST, request.FILES 사용
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = Post.objects.create(photo=form.cleaned_data['photo'], author=request.user)
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
             return redirect('post:post_list')
     else:
         form = PostForm()
