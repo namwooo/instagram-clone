@@ -3,12 +3,16 @@
 {% block content %}
 <div>
     {% for post in posts %}
-    <p>{{ post.author.username }}</p>
-    <a href="{% url 'post:post_detail' post_pk=post.pk %}">
-        <img src="{{ post.photo.url }}" alt="">
-    </a>
+    <div class="panel-heading">
+        <span>{{ post.author.username }}</span>
+    </div>
+    <div class="panel-body">
+        <a href="{% url 'post:post_detail' post_pk=post.pk %}">
+            <img src="{{ post.photo.url }}" alt="">
+        </a>
+    </div>
 
-{% include 'include/comment_display.html' %}
+    {% include 'include/comment_display.html' %}
 
     {% endfor %}
 </div>

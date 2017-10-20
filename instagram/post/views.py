@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Post, PostComment
@@ -54,11 +55,12 @@ def post_delete(request, post_pk):
     :param post_pk: post's primary key to access a certain post
     :return: redirect to post_list.html
     """
-    if not request.user.is_authenticated:
-        return redirect('post:post_list')
-
     if request.method == 'POST':
-        Post.objects.get(pk=post_pk).delete()
+        post = get_object_or_404(Post, pk=post_pk)
+        if post.author == request.user:
+            post.delete()
+        else:
+            raise PermissionDenied
     return redirect('post:post_list')
 
 
@@ -118,11 +120,11 @@ def comment_delete(request, comment_pk):
     :return: redirect to post_list/ redirect to html with id='next'
     """
     if not request.user.is_authenticated:
-        return redirect('member:post_list')
+        return redirect('post:post_list')
 
     if request.method == 'POST':
         PostComment.objects.get(pk=comment_pk).delete()
-        next = request.GET.get('next') # next = post-comments-{{ post.pk }}
+        next = request.GET.get('next')  # next = post-comments-{{ post.pk }}
         if next:
             return redirect('next')
-    return redirect('post:post_list')
+        return redirect('post:post_list')
