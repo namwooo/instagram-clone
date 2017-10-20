@@ -23,8 +23,8 @@ def post_list(request):
 
 def post_create(request):
     """
-    사용자로 부터 입력 받은 이미지 파일을 media/post에 저장하고,
-    그 파일 위치 정보를 데이터 베이스에 저장한다.
+    로그인된 사용자로 부터 이미지 파일과 author를 입력 받아, Post 객체를 생성한다.
+    이미지 파일을 media/post에 저장된다.
     :param request: request to upload imagefile
     :return: render to post_create.html
     """
@@ -48,6 +48,12 @@ def post_create(request):
 
 
 def post_delete(request, post_pk):
+    """
+    로그인된 사용자가 해당 포스트를 삭제한다.
+    :param request: request to delete a post from user
+    :param post_pk: post's primary key to access a certain post
+    :return: redirect to post_list.html
+    """
     if not request.user.is_authenticated:
         return redirect('post:post_list')
 
@@ -102,10 +108,21 @@ def comment_create(request, post_pk):
                 return redirect(next)
             return redirect('post:post_detail', post_pk=post.pk)
 
-# def comment_delete(request, post_pk):
-#     if not request.user.is_authenticated:
-#         return redirect('member:post_list')
-#
-#     if request.method == 'POST':
-#         PostComment.objects.get(pk=post_pk).delete()
-#     return redirect('post:post_list')
+
+def comment_delete(request, comment_pk):
+    """
+    로그인 된 사용자가 해당 댓글을 삭제한다.
+    댓글 삭제 후, id가 post-comments-{{ post.pk }}인 html위치로 리다이렉트 한다.
+    :param request: request to delete a comment from user
+    :param comment_pk: PostComment's primary key
+    :return: redirect to post_list/ redirect to html with id='next'
+    """
+    if not request.user.is_authenticated:
+        return redirect('member:post_list')
+
+    if request.method == 'POST':
+        PostComment.objects.get(pk=comment_pk).delete()
+        next = request.GET.get('next') # next = post-comments-{{ post.pk }}
+        if next:
+            return redirect('next')
+    return redirect('post:post_list')

@@ -1,6 +1,10 @@
     <ul id="post-comments-{{ post.pk }}">
         {% for comment in post.comments.all %}
         <li>{{ comment.content }}</li>
+        <form action="{% url 'post:comment_delete' comment_pk=comment.pk %}" method="POST">
+        {% csrf_token %}
+        <button class="btn-primary">삭제</button>
+        </form>
         {% endfor %}
     </ul>
 

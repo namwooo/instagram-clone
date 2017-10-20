@@ -3,20 +3,25 @@ from django.db import models
 
 
 class UserManager(DjangoUserManager):
+    """
+    superuser 생성시, age 디폴트 값을 29으로 할당한다.
+    auth.UserManager.create_superuser를 오버라이드했다.
+    """
     def create_superuser(self, *args, **kwargs):
         return super().create_superuser(age=29, *args, **kwargs)
 
 
 class User(AbstractUser):
     """
-
+    AbstractUser모델을 상속 받은 User 모덿을 정의한다.
+    Username과 password는 필수 사항이다. img_profile과 age는 선택사항이다.
+    그외 선택사항들은 AbstractUser모델을 참고하자.
     """
     img_profile = models.ImageField(
         upload_to='user',
         blank=True,
     )
     age = models.IntegerField()
-    # REQUIRED_FIELDS에 AbstractUser의 REQUIRED_FIELDS와 age를 할당한다.
     # REQUIRED_FIELDS = AbstractUser.REQUIRED_FIELDS + ['age']
 
     objects = UserManager()  # proxy model로 UserManager 사용한다.
