@@ -1,18 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
-    {% if post.photo %}
-    <p>{{ post.author.username }}</p>
-    <form action="{% url 'post:post_delete' post_pk=post.pk %}" method="POST">
-        {% csrf_token %}
-        <button class="btn-primary">삭제</button>
-    </form>
-    <img src="{{ post.photo.url }}" alt="">
-    {% else %}
-    <h3>No image file exist</h3>
-    {% endif %}
-
-    {% include 'include/comment_display.html' %}
+<div class="post-detail">
+	{% include 'include/panel.html' with post_type='detail' %}
 </div>
 {% endblock %}

@@ -1,19 +1,14 @@
 {% extends 'base.html' %}
+<!--
+1. 작성자 username나오게
+2. Post를 나타내는 HTML요소를 include/post.html로 분리해서 사용
+3. Post및 Comment삭제 기능 추가(작성한 유저만 가능하도록)
+-->
 
 {% block content %}
-<div id="post-{{ post.pk }}" class="panel panel-default post">
-    {% for post in posts %}
-    <div class="panel-heading">
-        <span>{{ post.author.username }}</span>
-    </div>
-    <div class="panel-body">
-        <a href="{% url 'post:post_detail' post_pk=post.pk %}">
-            <img src="{{ post.photo.url }}" alt="">
-        </a>
-    </div>
-
-    {% include 'include/comment_display.html' %}
-
-    {% endfor %}
+<div>
+	{% for post in posts %}
+		{% include 'include/panel.html' with post_type='list' %}
+	{% endfor %}
 </div>
 {% endblock %}
