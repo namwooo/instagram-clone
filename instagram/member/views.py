@@ -43,7 +43,9 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             form.login(request)
-
+            next_path = request.GET.get('next')
+            if next_path:
+                return redirect('next_path')
             return redirect('post:post_list')
     else:
         form = LoginForm()

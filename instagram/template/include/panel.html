@@ -13,6 +13,19 @@
             <img src="{{ post.photo.url }}" class="img-post">
         </a>
         <div class="body-content">
+            <div>
+                <form action="{% url 'post:post_like_toggle' post_pk=post.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button>
+                        <span class="glyphicon
+                        {% if post in user.like_posts.all %}
+                        glyphicon-heart
+                        {% else %}
+                        glyphicon-heart-empty
+                        {% endif %}"></span>
+                    </button>
+                </form>
+            </div>
             <ul id="post-comment-{{ post.pk }}">
                 {% for comment in post.comments.all %}
                 <li>
