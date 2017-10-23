@@ -130,7 +130,6 @@ def comment_delete(request, comment_pk):
         else:
             raise PermissionDenied
 
-
             # if not request.user.is_authenticated:
             #     return redirect('post:post_list')
             #
@@ -140,3 +139,29 @@ def comment_delete(request, comment_pk):
             #     if next:
             #         return redirect('next')
             #     return redirect('post:post_list')post_list
+
+
+def post_like_toggle(request, post_pk):
+    """
+
+    :param request:
+    :param post_pk:
+    :return:
+    """
+    if not request.user.is_authenticated:
+        return redirect('member:login')
+
+    if request.method == 'POST':
+        next_path = request.GET.get('next')
+        post = get_object_or_404(Post, pk=post_pk)
+        user = request.user
+        filtered_like_posts = user.like_posts.filter(pk=post_pk)
+
+        if filtered_like_posts.exist():
+            user.like_posts.remove(filtered_like_posts)
+        else:
+            user.like_posts.add(post)
+
+        if next_path:
+            return redirect(next_path)
+        return redirect('post:post_detail', post_pk=post_pk)
