@@ -1,4 +1,3 @@
-
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -132,16 +131,6 @@ def comment_delete(request, comment_pk):
                 return redirect('next')
         else:
             raise PermissionDenied
-
-            # if not request.user.is_authenticated:
-            #     return redirect('post:post_list')
-            #
-            # if request.method == 'POST':
-            #     PostComment.objects.get(pk=comment_pk).delete()
-            #     next = request.GET.get('next')  # next = post-comments-{{ post.pk }}
-            #     if next:
-            #         return redirect('next')
-            #     return redirect('post:post_list')post_list
 
 
 @login_required

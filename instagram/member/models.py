@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser, UserManager as DjangoUserManager
 from django.db import models
 
+from post.models import Post
+
 
 class UserManager(DjangoUserManager):
     """
@@ -27,9 +29,27 @@ class User(AbstractUser):
         'post.Post',
         verbose_name='좋아요 누른 포스트 목록'
     )
+    following_users = models.ManyToManyField(
+        'self',
+        symmetrical=False,
+        through='Relation',
+        related_name='followers'
+    )
 
     objects = UserManager()  # proxy model로 UserManager 사용한다.
 
     class Meta:
         verbose_name = '사용자'
         verbose_name_plural = ''
+
+
+class Relation(models.Model):
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="who_follows")
+    follower = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="who_is_followed")
+    created_time = models.DateTimeField(auto_now=True)
