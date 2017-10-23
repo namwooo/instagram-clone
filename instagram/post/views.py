@@ -126,29 +126,22 @@ def comment_delete(request, comment_pk):
         comment = get_object_or_404(PostComment, pk=comment_pk)
         if comment.author == request.user:
             comment.delete()
-            next = request.GET.get('next')
-            if next:
-                return redirect('next')
+            next_path = request.GET.get('next')
+            if next_path:
+                return redirect(next_path)
         else:
             raise PermissionDenied
 
 
-@login_required
 def post_like_toggle(request, post_pk):
-    """
-
-    :param request:
-    :param post_pk:
-    :return:
-    """
     if not request.user.is_authenticated:
         return redirect('member:login')
 
     if request.method == 'POST':
-        next_path = request.GET.get('next')
         post = get_object_or_404(Post, pk=post_pk)
         user = request.user
         filtered_like_posts = user.like_posts.filter(pk=post_pk)
+        next_path = request.GET.get('next')
 
         if filtered_like_posts.exists():
             user.like_posts.remove(post)
@@ -157,4 +150,31 @@ def post_like_toggle(request, post_pk):
 
         if next_path:
             return redirect(next_path)
-        return redirect('post:post_detail', post_pk=post_pk)
+        return redirect('post:post_detail', pk=post_pk)
+
+
+# @login_required
+# def post_like_toggle(request, post_pk):
+#     """
+#
+#     :param request:
+#     :param post_pk:
+#     :return:
+#     """
+#     if not request.user.is_authenticated:
+#         return redirect('member:login')
+#
+#     if request.method == 'POST':
+#         next_path = request.GET.get('next')
+#         post = get_object_or_404(Post, pk=post_pk)
+#         user = request.user
+#         filtered_like_posts = user.like_posts.filter(pk=post_pk)
+#
+#         if filtered_like_posts.exists():
+#             user.like_posts.remove(post)
+#         else:
+#             user.like_posts.add(post)
+#
+#         if next_path:
+#             return redirect(next_path)
+#         return redirect('post:post_detail', post_pk=post_pk)

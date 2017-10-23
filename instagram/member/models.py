@@ -42,7 +42,6 @@ class User(AbstractUser):
         verbose_name = '사용자'
         verbose_name_plural = ''
 
-
     def follow_toggle(self, user):
         # 1. 주어진 user가 User객체인지 확인
         #    아니면 raise ValueError()
@@ -51,7 +50,7 @@ class User(AbstractUser):
         if not isinstance(user, User):
             raise ValueError('"user" argument must be User instance!')
 
-        relation, relation_created = self.following_user_relations.get_or_create(to_user=user)
+        relation, relation_created = self.following_users.get_or_create(follower=user)
         if relation_created:
             return True
         relation.delete()
