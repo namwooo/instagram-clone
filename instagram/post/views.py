@@ -133,10 +133,8 @@ def comment_delete(request, comment_pk):
             raise PermissionDenied
 
 
+@login_required
 def post_like_toggle(request, post_pk):
-    if not request.user.is_authenticated:
-        return redirect('member:login')
-
     if request.method == 'POST':
         post = get_object_or_404(Post, pk=post_pk)
         user = request.user
@@ -151,7 +149,6 @@ def post_like_toggle(request, post_pk):
         if next_path:
             return redirect(next_path)
         return redirect('post:post_detail', pk=post_pk)
-
 
 # @login_required
 # def post_like_toggle(request, post_pk):
