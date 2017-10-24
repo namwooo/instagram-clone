@@ -1,5 +1,9 @@
+import requests
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
+from config import settings
 from .forms import SignUpForm, LoginForm
 
 from django.contrib.auth import get_user_model, logout as django_logout
@@ -51,9 +55,31 @@ def login(request):
         form = LoginForm()
 
     context = {
-        'form': form
+        'form': form,
+        'facebook_app_id': settings.FACEBOOK_APP_ID
     }
     return render(request, 'member/login.html', context)
+
+
+def facebook_login(request):
+    url_access_token = 'https://graph.facebook.com/v2.10/oauth/access_token?'
+
+    redirect_uri = '{scheme}://{host}{relative_url}'.format(
+        scheme=request.scheme,
+        host=request.META['HTTP_HOST'],
+        relative_url=reverse('member:facebook_login')
+    )
+
+    params_access_token = {
+        'client_id': settings.FACEBOOK_APP_ID,
+        'client_secret': settings.FACEBOOK_SECRET_KEY,
+        'redirect_uri': redirect_uri,
+        'code': request.GET.get('code'),
+    }
+
+    r = requests.get(url_access_token, params_access_token)
+
+    return HttpResponse(r.text)
 
 
 def logout(request):

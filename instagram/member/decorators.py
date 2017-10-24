@@ -21,7 +21,6 @@ def login_required(view_func):
 #             url = '{base_url}?next={referer}'.format(
 #                 base_url=reverse('memeber:login'),
 #                 referer=referer)
-#
-#             return redirect('member:login')
+#             return redirect(url)
 #         return view_func(*args, **kwargs)
 #     return decorator

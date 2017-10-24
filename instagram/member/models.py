@@ -33,7 +33,6 @@ class User(AbstractUser):
         'self',
         symmetrical=False,
         through='Relation',
-        related_name='followers'
     )
 
     objects = UserManager()  # proxy model로 UserManager 사용한다.
@@ -41,6 +40,22 @@ class User(AbstractUser):
     class Meta:
         verbose_name = '사용자'
         verbose_name_plural = ''
+
+    # def follow_toggle(self, user):
+    #     if not isinstance(user, User):
+    #         raise ValueError('"user" argument must be User instance!')
+    #
+    #     # 사용자가 팔로우 하는 목록에 해당 사용자가 존재 하면, 그 팔로우 관계를 삭제한다.
+    #     if user in self.following_users.all():
+    #         Relation.objects.filter(
+    #             who_follows=self,
+    #             who_is_followed=user,
+    #         ).delete()
+    #     else:
+    #         Relation.objects.create(
+    #             who_follows=self,
+    #             who_is_followed=user,
+    #         )
 
     def follow_toggle(self, user):
         # 1. 주어진 user가 User객체인지 확인
@@ -50,7 +65,7 @@ class User(AbstractUser):
         if not isinstance(user, User):
             raise ValueError('"user" argument must be User instance!')
 
-        relation, relation_created = self.following_users.get_or_create(follower=user)
+        relation, relation_created = self.following_users.who_follows.get_or_create(follower=user)
         if relation_created:
             return True
         relation.delete()
@@ -75,9 +90,11 @@ class Relation(models.Model):
     following = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="who_follows")
+        related_name="who_follows"
+    )
     follower = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="who_is_followed")
+        related_name="who_is_followed"
+    )
     created_time = models.DateTimeField(auto_now=True)

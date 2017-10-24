@@ -39,6 +39,10 @@ config_secret_common_str = f.read()
 config_secret_common = json.loads(config_secret_common_str)
 SECRET_KEY = config_secret_common["django"]["secret_key"]
 
+# Facebook
+FACEBOOK_APP_ID = config_secret_common['facebook']['app_id']
+FACEBOOK_SECRET_KEY = config_secret_common['facebook']['secret_code']
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 

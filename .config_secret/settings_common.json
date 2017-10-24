@@ -11,5 +11,10 @@
         "PASSWORD": "000000"
       }
     }
+  },
+  "facebook":{
+    "app_id": "195996510944574",
+    "secret_code": "22792a2e8c57041a7bf6a9d2903c553a"
   }
 }
+
