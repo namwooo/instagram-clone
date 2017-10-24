@@ -8,7 +8,7 @@ from django.urls import reverse
 from config import settings
 from .forms import SignUpForm, LoginForm
 
-from django.contrib.auth import get_user_model, logout as django_logout
+from django.contrib.auth import get_user_model, logout as django_logout, login as django_login
 
 User = get_user_model()
 
@@ -59,7 +59,7 @@ def login(request):
     context = {
         'form': form,
         'facebook_app_id': settings.FACEBOOK_APP_ID,
-        'facebook_scope':settings.FACEBOOK_SCOPE,
+        'facebook_scope': settings.FACEBOOK_SCOPE,
     }
     return render(request, 'member/login.html', context)
 
@@ -79,6 +79,12 @@ def facebook_login(request):
         scopes: list
         type: str
         user_id: str
+
+    class UserInfo:
+        def __init__(self, data):
+            self.id = data['id']
+            self.email = data['email']
+            self.url_picture = data['picture']['data']['url']
 
     app_id = settings.FACEBOOK_APP_ID
     app_secret_key = settings.FACEBOOK_SECRET_KEY
@@ -134,7 +140,18 @@ def facebook_login(request):
     response = requests.get(url_graph_user_info, params_graph_user_info)
     result = response.json()
 
-    return HttpResponse(result.items())
+    user_info = UserInfo(data=result)
+    username = f'fb_{user_info.id}'
+    if User.objects.filter(username=username).exists():
+        user = User.objects.get(username=username)
+    else:
+        user = User.objects.create_user(
+            user_type=User.USER_TYPE_FACEBOOK,
+            username=username,
+            age=0,
+        )
+    django_login(request, user)
+    return redirect('post:post_list')
 
 
 def logout(request):

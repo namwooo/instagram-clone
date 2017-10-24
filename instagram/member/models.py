@@ -20,6 +20,13 @@ class User(AbstractUser):
     Username과 password는 필수 사항이다. img_profile과 age는 선택사항이다.
     그외 선택사항들은 AbstractUser모델을 참고하자.
     """
+    USER_TYPE_FACEBOOK = 'F'
+    USER_TYPE_DJANGO = 'D'
+    CHOICES_USER_TYPE = (
+        (USER_TYPE_FACEBOOK, 'Facebook'),
+        (USER_TYPE_DJANGO, 'Django'),
+    )
+    user_type = models.CharField(max_length=1, choices=CHOICES_USER_TYPE)
     img_profile = models.ImageField(
         upload_to='user',
         blank=True,
