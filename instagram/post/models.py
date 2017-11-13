@@ -9,7 +9,7 @@ class PostManager(models.Model):
     """
 
     def get_queryset(self):
-        return super().get_queryset().exclude(author__isnull=True)
+        return super().get_queryset().exclude(author=None)
 
 
 class Post(models.Model):

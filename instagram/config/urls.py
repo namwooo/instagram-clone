@@ -19,13 +19,16 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from config.views import index
+from member.apis import Login
+from post.apis import PostList
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index),
     url(r'^post/', include('post.urls', namespace='post')),
     url(r'^member/', include('member.urls', namespace='member')),
-    url(r'^api/', include('post.urls.apis', namespace='apis'))
+    url(r'^api/post/', PostList.as_view(), name='api-post'),
+    url(r'^api/member/login/$', Login.as_view(), name='api-login'),
 ]
 
 urlpatterns += static(
