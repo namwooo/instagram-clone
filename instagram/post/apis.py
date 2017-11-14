@@ -1,4 +1,3 @@
-
 from rest_framework import mixins, generics, permissions
 from rest_framework.response import Response
 
@@ -60,6 +59,7 @@ class PostDetail(mixins.RetrieveModelMixin,
 
 class PostLikeToggle(generics.GenericAPIView):
     queryset = Post.objects.all()
+
     # url 패턴에서 특정 포스트 객체를 가져오기 위한 그룹명을 지정한다.
     # lookup_url_kwarg = 'pk'
 
