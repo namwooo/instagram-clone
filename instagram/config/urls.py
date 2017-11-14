@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from config.views import index
-from member.apis import Login
+from member.apis import Login, Signup, FacebookLogin
 from post.apis import PostList
 
 urlpatterns = [
@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^member/', include('member.urls', namespace='member')),
     url(r'^api/post/', PostList.as_view(), name='api-post'),
     url(r'^api/member/login/$', Login.as_view(), name='api-login'),
+    url(r'^api/member/signup/$', Signup.as_view(), name='api-signup'),
+    url(r'^api/member/facebook-login/$', FacebookLogin.as_view(), name='api-facebook-login'),
 ]
 
 urlpatterns += static(
