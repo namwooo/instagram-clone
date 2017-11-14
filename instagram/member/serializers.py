@@ -48,3 +48,11 @@ class SignupSerializer(serializers.ModelSerializer):
             password=validated_data['password1'],
             age=validated_data['age'],
         )
+
+    def to_representation(self, obj):
+        ret = super().to_representation(obj)
+        data = {
+            'user': ret,
+            'token': obj.token
+        }
+        return data
