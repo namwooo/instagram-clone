@@ -1,8 +1,6 @@
-from django.http import Http404
-from rest_framework import status, mixins, generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import mixins, generics, permissions
 
+from utils.permissions import IsAuthorOrReadOnly
 from .models import Post
 from .serializer import PostSerializer
 
@@ -12,6 +10,7 @@ class PostList(mixins.ListModelMixin,
                generics.GenericAPIView):  # 상속 순서는 오른쪽 부터 왼쪽 방향이다. 베이스가 되는 부모 클래스를 오른쪽에 배치해주자.
     queryset = Post.objects.all()  # queryset 이란 변수 이름은 GenericAPIView에 정의되어 있기 떄문에 굳이 바꿔 주진 말자.
     serializer_class = PostSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -44,6 +43,7 @@ class PostDetail(mixins.RetrieveModelMixin,
                  generics.GenericAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (IsAuthorOrReadOnly,)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
