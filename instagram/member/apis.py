@@ -13,41 +13,17 @@ from member.models import User
 from member.serializers import UserSerializer, SignupSerializer
 
 
-# class Login(APIView):
-#     '''
-#     BasicAuthetication으로 사용자 인증 후, 로그인 한다.
-#     '''
-#
-#     def post(self, request, *args, **kwargs):
-#         # request 헤더를 통해 들어온 username과 password를 가져온다.
-#         username = request.META.get('HTTP_USERNAME')
-#         password = request.META.get('HTTP_PASSWORD')
-#
-#         # authenticate() 메소드는 인증에 성공하면 해당 User 객체를 반환한다.
-#         user = authenticate(
-#             username=username,
-#             password=password,
-#         )
-#
-#         # 인증에 성공한 경우, user를 serialize한 데이터와 200 status를 보낸다.
-#         if user:
-#             data = {
-#                 'user': UserSerializer(user).data
-#             }
-#             return Response(data, status=status.HTTP_200_OK)
-#
-#         # 인증에 실패한 경우, 요청 받은 username과 password, 401 status를 보낸다.
-#         data = {
-#             'username': username,
-#             'password': password,
-#         }
-#         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
-
 class Login(APIView):
+    """
+    Create or get token for authenticated user.
+
+    * Requires username and password.
+    """
+
     def post(self, request, *args, **kwargs):
         if not request.data:
             return Response(
-                {'Error': "username/password are required!"},
+                {'error': "username/password are required!"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -58,35 +34,64 @@ class Login(APIView):
 
         if user:
             token, token_created = Token.objects.get_or_create(user=user)
+
             data = {
                 'token': token.key,
-                'user': UserSerializer(user).data,
+                'user': UserSerializer(user).data
             }
+
             return Response(data, status=status.HTTP_200_OK)
 
         data = {
-            'username': username,
-            'password': password,
+            'error': "Invalid credentials!",
         }
 
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
 
+# class Signup(APIView):
+#     """
+#     Create a new user.
+#
+#     * Requires unique username, age and password confirmation.
+#     """
+#
+#     def post(self, request, *args, **kwargs):
+#         if not request.data:
+#             return Response(
+#                 {'error': "username/password are required!"},
+#                 status=status.HTTP_400_BAD_REQUEST,
+#             )
+#
+#         username = request.data['username']
+#         password1 = request.data['password1']
+#         password2 = request.data['password2']
+#         age = request.data['age']
+#
+#         if User.objects.filter(username=username).exists():
+#             return Response({'message': "username already exists!"})
+#         elif    password1 != password2:
+#             return Response({'message': "password doesn't match!"})
+#
+#         user = User.objects.create_user(
+#             username=username,
+#             password=password1,
+#             age=age,
+#         )
+#
+#         data = {
+#             'user': UserSerializer(user).data
+#         }
+#
+#         return Response(data, status=status.HTTP_201_CREATED)
+
 class Signup(APIView):
-    def post(self, request, *args, **kwargs):
-        username = request.data['username']
-        password = request.data['password']
+    """
+    Createa a new user using SignupSerializer.
 
-        if User.objects.filter(username=username).exists():
-            return Response({'message': 'Username already exist'})
+    * Requires validation in SignupSerializer.
+    """
 
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-        )
-
-
-class Signup(APIView):
     def post(self, request, *args, **kwargs):
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
