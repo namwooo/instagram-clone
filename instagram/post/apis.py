@@ -1,5 +1,6 @@
-from rest_framework import mixins, generics, permissions
+from rest_framework import mixins, generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from member.serializers import UserSerializer
 from utils.permissions import IsAuthorOrReadOnly
@@ -7,37 +8,92 @@ from .models import Post
 from .serializer import PostSerializer
 
 
-class PostList(mixins.ListModelMixin,
-               mixins.CreateModelMixin,
-               generics.GenericAPIView):  # 상속 순서는 오른쪽 부터 왼쪽 방향이다. 베이스가 되는 부모 클래스를 오른쪽에 배치해주자.
-    queryset = Post.objects.all()  # queryset 이란 변수 이름은 GenericAPIView에 정의되어 있기 떄문에 굳이 바꿔 주진 말자.
+# class PostList(APIView):
+#     """
+#     List all posts or create a new post.
+#
+#     * Allow authenticated user to perform any request.
+#     * Only safe methods are available for unauthenticated user.
+#     """
+#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+#
+#     def get(self, request, *args, **kwargs):
+#         posts = Post.objects.all()
+#         serializer = PostSerializer(posts, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def post(self, request, *args, **kwargs):
+#         serializer = PostSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class PostList(mixins.ListModelMixin,
+#                mixins.CreateModelMixin,
+#                generics.GenericAPIView):  # Order of inheritance is from right to left.
+#     """
+#     List all posts or create a new post.
+#
+#     * Allow authenticated user to perform any request.
+#     * Only safe methods are available for unauthenticated user.
+#     """
+#     queryset = Post.objects.all()  # Keep the variable name, queryset.
+#     serializer_class = PostSerializer
+#     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+#
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+#
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+#
+#     def perform_create(self, serializer):
+#         # Override perform_create() in CreateModelMixin.
+#         # Assign user from request to author.
+#         serializer.save(author=self.request.user)
+
+
+class PostList(generics.ListCreateAPIView):
+    """
+    List all posts or create a new post.
+
+    * Allow authenticated user to perform any request.
+    * Only safe methods are available for unauthenticated user.
+    """
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-    def perform_create(self, serializer):
-        # self.create 안에 정의 되어 있는 save()를 오버라이드 한다.
-        # author에 요청을 보낸 유저를 할당한다.
-        serializer.save(author=self.request.user)
-
-
-# class PostList(APIView):
-#     def get(self, request, format=None):
-#         posts = Post.objects.all()
-#         serializer = PostSerializer(posts, many=True)
-#         return Response(serializer.data)
+# class PostDetail(APIView):
+#     """
+#     Retrieve, update, delete a post in database
 #
-#     def post(self, request, format=None):
-#         serializer = PostSerializer(data=request.data)
+#     * Allow author to perform any request.
+#     * Only safe method is available for who is not author.
+#     """
+#     permission_classes = (IsAuthorOrReadOnly,)
+#
+#     def get(self, request, *args, **kwargs):
+#         post = Post.objects.get(pk=self.kwargs['pk'])
+#         serializer = PostSerializer(post)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def put(self, request, *args, **kwargs):
+#         post = Post.objects.get(pk=self.kwargs['pk'])
+#         serializer = PostSerializer(post)
 #         if serializer.is_valid():
-#             serializer.save(author=request.user)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#     def delete(self, request, *args, **kwargs):
+#         post = Post.objects.get(pk=self.kwargs['pk'])
+#         self.delete(post)
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class PostDetail(mixins.RetrieveModelMixin,
                  mixins.UpdateModelMixin,
