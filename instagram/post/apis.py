@@ -67,32 +67,32 @@ class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
-# class PostDetail(APIView):
-#     """
-#     Retrieve, update, delete a post in database
-#
-#     * Allow author to perform any request.
-#     * Only safe method is available for who is not author.
-#     """
-#     permission_classes = (IsAuthorOrReadOnly,)
-#
-#     def get(self, request, *args, **kwargs):
-#         post = Post.objects.get(pk=self.kwargs['pk'])
-#         serializer = PostSerializer(post)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-#
-#     def put(self, request, *args, **kwargs):
-#         post = Post.objects.get(pk=self.kwargs['pk'])
-#         serializer = PostSerializer(post)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#     def delete(self, request, *args, **kwargs):
-#         post = Post.objects.get(pk=self.kwargs['pk'])
-#         self.delete(post)
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+class PostDetail(APIView):
+    """
+    Retrieve, update, delete a post in database
+
+    * Allow author to perform any request.
+    * Only safe method is available for who is not author.
+    """
+    permission_classes = (IsAuthorOrReadOnly,)
+
+    def get(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        serializer = PostSerializer(post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        serializer = PostSerializer(post)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        self.delete(post)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class PostDetail(mixins.RetrieveModelMixin,

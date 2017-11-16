@@ -1,4 +1,4 @@
-FROM        base
+FROM        namwootonya/base
 MAINTAINER  garson1362@gmail.com
 
 ENV         LANG C.UTF-8
