@@ -19,12 +19,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from config.views import index
+from member.views.auth_facebook import FrontFacebookLogin
 
 urlpatterns = [
+    url(r'^$', index, name='index'),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index),
-    url(r'^post/', include('post.urls', namespace='post')),
-    url(r'^member/', include('member.urls', namespace='member')),
+    url(r'^post/', include('post.urls.views', namespace='post')),
+    url(r'^member/', include('member.urls.views', namespace='member')),
 ]
 
 urlpatterns += static(
