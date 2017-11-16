@@ -53,7 +53,10 @@ FACEBOOK_SCOPE = ['user_friends', 'public_profile', 'email']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '.elasticbeanstalk.com',
+]
 
 AUTH_USER_MODEL = 'member.User'
 LOGIN_URL = 'member:login'
