@@ -132,25 +132,26 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PostLikeToggle(generics.GenericAPIView):
+    """
+    Toggle to mark 'like' on a post.
+    """
     queryset = Post.objects.all()
 
-    # url 패턴에서 특정 포스트 객체를 가져오기 위한 그룹명을 지정한다.
-    # lookup_url_kwarg = 'pk'
+    # Designate a group name from url to lookup post object.
+    # lookup_url_kwarg = '<group_name>' ex) 'pk'
 
     def post(self, request, *args, **kwargs):
-        # queryset에서 pk값으로 객체를 가져온다.
+        # get an object looking up with 'pk' from queryset.
         obj = self.get_object()
         user = request.user
-        # 유저의 좋아요 목록에 현재 포스트가 존재하는 경우, 해당 포스트를 제거한다.
-        # like_status로 좋아요 상태를 표시한다.
+        # if the post exists in user's like_post list,
+        # remove it from the list and put False to like_status
         if user.like_posts.filter(pk=obj.pk):
             user.like_posts.remove(obj)
             like_status = False
-        # 좋아요 포스트 목록에 없을 경우, 좋아요 목록에 추가한다.
         else:
             user.like_posts.add(obj)
             like_status = True
-        # 유저와 포스트 그리고 유저가 포스트를 좋아하는지에 대한 정보를 JSON 형태로 응답한다.
         data = {
             'user': UserSerializer(user).data,
             'post': PostSerializer(obj).data,
