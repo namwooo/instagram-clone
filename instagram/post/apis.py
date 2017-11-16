@@ -69,7 +69,7 @@ class PostList(generics.ListCreateAPIView):
 
 # class PostDetail(APIView):
 #     """
-#     Retrieve, update, delete a post in database
+#     Retrieve, update, delete a post.
 #
 #     * Allow author to perform any request.
 #     * Only safe method is available for who is not author.
@@ -77,12 +77,12 @@ class PostList(generics.ListCreateAPIView):
 #     permission_classes = (IsAuthorOrReadOnly,)
 #
 #     def get(self, request, *args, **kwargs):
-#         post = Post.objects.get(pk=self.kwargs['pk'])
+#         post = Post.objects.filter(pk=self.kwargs['pk'])
 #         serializer = PostSerializer(post)
 #         return Response(serializer.data, status=status.HTTP_200_OK)
 #
 #     def put(self, request, *args, **kwargs):
-#         post = Post.objects.get(pk=self.kwargs['pk'])
+#         post = Post.objects.filter(pk=self.kwargs['pk'])
 #         serializer = PostSerializer(post)
 #         if serializer.is_valid():
 #             serializer.save()
@@ -90,27 +90,45 @@ class PostList(generics.ListCreateAPIView):
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 #
 #     def delete(self, request, *args, **kwargs):
-#         post = Post.objects.get(pk=self.kwargs['pk'])
+#         post = Post.objects.filter(pk=self.kwargs['pk'])
 #         self.delete(post)
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class PostDetail(mixins.RetrieveModelMixin,
-                 mixins.UpdateModelMixin,
-                 mixins.DestroyModelMixin,
-                 generics.GenericAPIView):
+# class PostDetail(mixins.RetrieveModelMixin,
+#                  mixins.UpdateModelMixin,
+#                  mixins.DestroyModelMixin,
+#                  generics.GenericAPIView):
+#     """
+#     Retrieve, update, delete a post.
+#
+#     * Allow author to perform any request.
+#     * Only safe method is available for who is not author.
+#     """
+#     queryset = Post.objects.all()
+#     serializer_class = PostSerializer
+#     permission_classes = (IsAuthorOrReadOnly,)
+#
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+#
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
+#
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
+
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, delete a post.
+
+    * Allow author to perform any request.
+    * Only safe method is available for who is not author.
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (IsAuthorOrReadOnly,)
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
 
 
 class PostLikeToggle(generics.GenericAPIView):
