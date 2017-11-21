@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from member.serializers import UserSerializer
+from post.paginator import StandardResultSetPagination
 from utils.permissions import IsAuthorOrReadOnly
 from .models import Post
 from .serializer import PostSerializer
@@ -65,7 +66,7 @@ class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
+    pagination_class = StandardResultSetPagination
 
 # class PostDetail(APIView):
 #     """
@@ -131,7 +132,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthorOrReadOnly,)
 
 
-class PostLikeToggle(generics.GenericAPIView):
+class PostLikeToggle(generics. GenericAPIView):
     """
     Toggle to mark 'like' on a post.
     """
