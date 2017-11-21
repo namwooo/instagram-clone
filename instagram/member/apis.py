@@ -89,7 +89,7 @@ class Signup(APIView):
     """
     Createa a new user using SignupSerializer.
 
-    * Requires validation in SignupSerializer.
+    * Requires validation in SignupSeri alizer.
     """
 
     def post(self, request, *args, **kwargs):
