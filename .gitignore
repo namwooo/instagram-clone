@@ -4,6 +4,9 @@
 .idea/
 .config_secret/
 
+# Travis CI
+secrets.tar
+
 ### Django ###
 *.log
 *.pot
