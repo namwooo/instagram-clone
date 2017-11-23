@@ -1,0 +1,13 @@
+language:
+- python
+python:
+- 3.6
+install:
+- pip install -r requirements.txt
+before_script:
+- cd instagram
+script:
+- python manage.py test
+before_install:
+- openssl aes-256-cbc -K $encrypted_5873715644ce_key -iv $encrypted_5873715644ce_iv
+  -in secrets.tar.enc -out secrets.tar -d
